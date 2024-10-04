@@ -24,6 +24,7 @@ public class ControllerReserva {
 
     @Autowired
     private ReservaRepository reservaRepositorio;
+    @Autowired
     private ClienteRepository clienteRepository;
 
     @PostMapping
@@ -31,8 +32,8 @@ public class ControllerReserva {
     public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroReserva dados,
                                     UriComponentsBuilder uriBuilder,
                                     Authentication autenticado) {
-        // Verifica se o usuário está autenticado
-        if (autenticado == null || autenticado.getName() == null) {
+        // Verifica se o usuário n está autenticado
+        if (!autenticado.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 

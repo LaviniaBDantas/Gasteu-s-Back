@@ -37,7 +37,7 @@ public class ControllerCliente {
     public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroCliente dados, UriComponentsBuilder uriBuilder){
         //colocar validacao de duplicidade
         if (clienteRepositorio.findByCpf(dados.cpf()) != null) {
-            return ResponseEntity.badRequest().body(null); // Cliente já cadastrado
+            return ResponseEntity.badRequest().body("Cliente já cadastrado"); // Cliente já cadastrado
         }
         var cliente= new Cliente(dados);
         clienteRepositorio.save(cliente);

@@ -25,7 +25,6 @@ public class Reserva {
         this.mesa=dados.mesa();
         this.qtdPessoas=dados.qtd();
         this.cliente=cliente;
-        //tenho que colocar alguma vinculacao ao cpf do usuario logado
     }
 
     public Reserva() {
