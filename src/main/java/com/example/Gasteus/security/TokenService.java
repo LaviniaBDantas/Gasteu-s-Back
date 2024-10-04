@@ -15,7 +15,7 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    @Value("${JWT_SECRET}")
+    @Value("${gasteus.security.jwt.secret}")
     private String secret;
     public String gerarToken(Cliente cliente) {
         try {
