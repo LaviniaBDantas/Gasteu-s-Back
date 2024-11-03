@@ -2,8 +2,7 @@ package com.example.Gasteus.model.funcionario;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
-import java.sql.Date;
+import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 
 public record DadosCadastroFuncionario(
@@ -11,7 +10,8 @@ public record DadosCadastroFuncionario(
         @NotBlank String nome,
         @NotBlank String telefone,
         @NotBlank String funcao,
-        @NotNull LocalDate dataContratacao,  // Alteração aqui
-        @NotBlank String senha
+        @NotNull LocalDate dataContratacao,
+        @NotBlank String senha,
+        MultipartFile curriculo  // Novo campo para o documento
 ) {
 }

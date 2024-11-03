@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,12 +25,16 @@ public class Funcionario implements UserDetails {
     private LocalDate dataContratacao;
     private String senha;
     private String telefone;
+
+    @Column(name = "curriculo", columnDefinition = "bytea")
+    private byte[] curriculo;
+
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="role_id")
     private Role role;
 
 
-    public Funcionario(DadosCadastroFuncionario dados) {
+    public Funcionario(DadosCadastroFuncionario dados) throws IOException {
         this.nroCarteira = dados.nroCarteira();
         this.nome = dados.nome();
         this.funcao = dados.funcao();
@@ -126,5 +131,13 @@ public class Funcionario implements UserDetails {
 
     public void setNroCarteira(Long nroCarteira) {
         this.nroCarteira = nroCarteira;
+    }
+
+    public byte[] getCurriculo() {
+        return curriculo;
+    }
+
+    public void setCurriculo(byte[] curriculo) {
+        this.curriculo = curriculo;
     }
 }

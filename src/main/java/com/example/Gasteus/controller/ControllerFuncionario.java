@@ -21,6 +21,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
+
 @RestController
 public class ControllerFuncionario {
     @Autowired
@@ -37,7 +39,7 @@ public class ControllerFuncionario {
 
     @PostMapping("/cadastro/funcionario")
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroFuncionario dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity cadastrar(@ModelAttribute @Valid DadosCadastroFuncionario dados, UriComponentsBuilder uriBuilder) throws IOException {
         if (funcionarioRepository.findByNroCarteira(dados.nroCarteira()).isPresent()) {
             return ResponseEntity.badRequest().body("Funcionário já cadastrado");
         }
@@ -49,9 +51,20 @@ public class ControllerFuncionario {
 
         var funcionario = new Funcionario(dados);
         funcionario.setRole(funcRole);
+
+        // Processar o documento, se fornecido
+        if (dados.curriculo() != null && !dados.curriculo().isEmpty()) {
+            try {
+                funcionario.setCurriculo(dados.curriculo().getBytes());
+            } catch (IOException e) {
+                return ResponseEntity.badRequest().body("Erro ao processar o documento.");
+            }
+        }
+
         funcionarioRepository.save(funcionario);
         return ResponseEntity.ok(new DadosDetalhamentoFuncionario(funcionario));
     }
+
 
 
     @PostMapping("/login/funcionario")
