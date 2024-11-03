@@ -14,13 +14,11 @@ public class Reserva {
     private int mesa;
     private LocalDateTime dataHora;
     private int qtdPessoas;
-
     @ManyToOne
-    @JoinColumn(name="fk_cliente_cpf", referencedColumnName = "cpf", nullable = true)
+    @JoinColumn(name="fk_cliente_cpf", referencedColumnName = "cpf", nullable = false)
     private Cliente cliente;
 
     public Reserva(DadosCadastroReserva dados, Cliente cliente){
-        this.cod=dados.cod();
         this.dataHora=dados.dataHora();
         this.mesa=dados.mesa();
         this.qtdPessoas=dados.qtd();

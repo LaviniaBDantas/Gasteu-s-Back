@@ -8,8 +8,6 @@ import java.time.LocalDateTime;
 
 public record DadosCadastroReserva(
     @NotNull
-    Integer cod,
-    @NotNull
     Integer mesa,
     @NotNull
     LocalDateTime dataHora,

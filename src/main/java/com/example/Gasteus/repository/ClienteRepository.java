@@ -3,7 +3,8 @@ package com.example.Gasteus.repository;
 import com.example.Gasteus.model.cliente.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ClienteRepository extends JpaRepository <Cliente,String> {
+import java.util.Optional;
 
-    Cliente findByCpf(String cpf);
+public interface ClienteRepository extends JpaRepository <Cliente,String> {
+    Optional<Cliente> findByCpf(String cpf);
 }

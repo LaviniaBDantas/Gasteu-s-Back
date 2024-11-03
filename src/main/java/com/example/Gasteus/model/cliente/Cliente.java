@@ -1,5 +1,6 @@
 package com.example.Gasteus.model.cliente;
 
+import com.example.Gasteus.model.Role;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +18,9 @@ public class Cliente implements UserDetails {
     private String nome;
     private String telefone;
     private String senha;
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="role_id")
+    private Role role;
 
 
     public Cliente (DadosCadastroCliente dados){
@@ -32,8 +36,9 @@ public class Cliente implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.getNome()));
     }
+
 
     @Override
     public String getPassword() {
@@ -74,6 +79,16 @@ public class Cliente implements UserDetails {
     }
 
     public void setSenha(String senha) {
-        this.senha = new BCryptPasswordEncoder().encode(senha); // Hash da senha
+        this.senha = new BCryptPasswordEncoder().encode(senha);
     }
+
+    public void setRole(Role userRole) {
+        role=userRole;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+
 }
