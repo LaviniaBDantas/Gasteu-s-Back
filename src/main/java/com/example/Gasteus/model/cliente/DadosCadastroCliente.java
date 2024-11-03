@@ -1,6 +1,7 @@
 package com.example.Gasteus.model.cliente;
 
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.web.multipart.MultipartFile;
 
 public record DadosCadastroCliente(
         @NotBlank
@@ -10,6 +11,7 @@ public record DadosCadastroCliente(
         @NotBlank
         String telefone,
         @NotBlank
-        String senha
+        String senha,
+        MultipartFile fotoPerfil
 ) {
 }

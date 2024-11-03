@@ -18,6 +18,11 @@ public class Cliente implements UserDetails {
     private String nome;
     private String telefone;
     private String senha;
+
+    @Column(name = "foto_perfil", columnDefinition = "bytea")
+    private byte[] fotoPerfil;
+
+
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="role_id")
     private Role role;
@@ -90,5 +95,11 @@ public class Cliente implements UserDetails {
         return role;
     }
 
+    public byte[] getFotoPerfil() {
+        return fotoPerfil;
+    }
 
+    public void setFotoPerfil(byte[] fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
+    }
 }
