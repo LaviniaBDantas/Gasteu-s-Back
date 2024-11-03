@@ -41,45 +41,35 @@ public class ControllerCliente {
 
     @PostMapping("/cadastro/cliente")
     @Transactional
-    public ResponseEntity cadastrar(
-            @RequestParam("cpf") @NotBlank String cpf,
-            @RequestParam("nome") @NotBlank String nome,
-            @RequestParam("telefone") @NotBlank String telefone,
-            @RequestParam("senha") @NotBlank String senha,
-            @RequestParam(value = "fotoPerfil", required = false) MultipartFile fotoPerfil,
-            UriComponentsBuilder uriBuilder) {
-
-        // Verificação se o cliente já existe
-        if (clienteRepositorio.findByCpf(cpf).isPresent()) {
+    public ResponseEntity<?> cadastrar(@ModelAttribute @Valid DadosCadastroCliente dados, UriComponentsBuilder uriBuilder) {
+        // Verifica se o cliente já existe
+        if (clienteRepositorio.findByCpf(dados.cpf()).isPresent()) {
             return ResponseEntity.badRequest().body("Cliente já cadastrado");
         }
 
+        // Busca a role USER
         Role userRole = roleRepository.findByNome("USER");
         if (userRole == null) {
             return ResponseEntity.badRequest().body("Role USER não encontrada.");
         }
 
-        var cliente = new Cliente();
-        cliente.setCpf(cpf);
-        cliente.setNome(nome);
-        cliente.setTelefone(telefone);
-        cliente.setSenha(senha); // Aqui você pode considerar a criptografia
+        // Cria o cliente e associa a role
+        var cliente = new Cliente(dados);
         cliente.setRole(userRole);
 
-        // Processar a foto de perfil se fornecida
-        if (fotoPerfil != null && !fotoPerfil.isEmpty()) {
+        // Processa a foto de perfil, se fornecida
+        if (dados.fotoPerfil() != null && !dados.fotoPerfil().isEmpty()) {
             try {
-                cliente.setFotoPerfil(fotoPerfil.getBytes());
+                cliente.setFotoPerfil(dados.fotoPerfil().getBytes());
             } catch (IOException e) {
                 return ResponseEntity.badRequest().body("Erro ao processar a foto de perfil.");
             }
         }
 
+        // Salva o cliente no repositório
         clienteRepositorio.save(cliente);
         return ResponseEntity.ok(new DadosDetalhamentoCliente(cliente));
     }
-
-
 
     @PostMapping("/login/cliente")
     public ResponseEntity<DadosTokenJWT> login(@RequestBody @Valid DadosAutenticacaoCliente dados) {
