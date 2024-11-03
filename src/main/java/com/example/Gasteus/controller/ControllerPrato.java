@@ -28,7 +28,6 @@ public class ControllerPrato {
         var prato = new Prato();
         prato.setNome(dados.nome());
         prato.setPreco(dados.preco());
-        prato.setAvaliacaoMed(dados.avaliacaoMed());
         prato.setDescricao(dados.descricao());
         prato.setModoPreparo(dados.modoPreparo());
         pratoRepository.save(prato);

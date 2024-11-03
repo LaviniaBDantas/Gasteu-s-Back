@@ -7,7 +7,6 @@ public record DadosCadastroPrato
 
    (@NotBlank String nome,
     @NotNull Double preco,
-    Double avaliacaoMed,
     @NotBlank
     String descricao,
    @NotBlank
