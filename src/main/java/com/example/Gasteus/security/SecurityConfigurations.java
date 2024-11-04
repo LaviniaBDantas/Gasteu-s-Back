@@ -141,7 +141,7 @@ public class SecurityConfigurations {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // Permite todos os requests OPTIONS
-                            .requestMatchers("/login/cliente", "/cadastro/cliente", "/home").permitAll()
+                            .requestMatchers("/login/cliente", "/cadastro/cliente", "/home", "/pratos").permitAll()
                             .requestMatchers("/login/funcionario", "/cadastro/funcionario").permitAll()
                             .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                             .requestMatchers("/reserva").authenticated()

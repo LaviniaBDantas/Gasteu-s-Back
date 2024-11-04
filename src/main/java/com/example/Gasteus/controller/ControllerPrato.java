@@ -42,14 +42,24 @@ public class ControllerPrato {
         var pratoOptional = pratoRepository.findByCod(cod);
         if (pratoOptional.isPresent()) {
             Prato prato = pratoOptional.get();
-            prato.setNome(dados.nome());
-            prato.setPreco(dados.preco());
-            prato.setDescricao(dados.descricao());
+
+            // Verifica e atualiza cada campo apenas se o dado não for nulo
+            if (dados.nome() != null) {
+                prato.setNome(dados.nome());
+            }
+            if (dados.preco() != null) {
+                prato.setPreco(dados.preco());
+            }
+            if (dados.descricao() != null) {
+                prato.setDescricao(dados.descricao());
+            }
+
             pratoRepository.save(prato);
             return ResponseEntity.ok(new DadosDetalhamentoPrato(prato));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+
 
     // Rota para ADMIN: Deletar um prato
     @DeleteMapping("/admin/prato/{cod}")
