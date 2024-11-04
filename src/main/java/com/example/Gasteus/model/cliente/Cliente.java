@@ -18,6 +18,9 @@ public class Cliente implements UserDetails {
     private String nome;
     private String telefone;
     private String senha;
+    @Column(name = "classificao")
+    private String classificacao;
+
 
     @Column(name = "foto_perfil", columnDefinition = "bytea")
     private byte[] fotoPerfil;
@@ -101,5 +104,13 @@ public class Cliente implements UserDetails {
 
     public void setFotoPerfil(byte[] fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
+    }
+
+    public String getClassificacao() {
+        return classificacao;
+    }
+
+    public void setClassificacao(String classificacao) {
+        this.classificacao = classificacao;
     }
 }

@@ -23,6 +23,14 @@ public class Prato {
     @Column(name = "modo_preparo", columnDefinition = "TEXT")
     private String modoPreparo;
 
+
+//    public Prato(DadosCadastroPrato dados) {
+//        this.nome = dados.nome();
+//        this.preco = dados.preco();
+//        this.descricao = dados.descricao();
+//        this.modoPreparo = dados.modoPreparo();
+//    }
+
     // Getters e Setters
     public Integer getCod() {
         return cod;

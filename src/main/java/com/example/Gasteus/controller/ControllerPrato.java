@@ -25,11 +25,13 @@ public class ControllerPrato {
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public ResponseEntity<DadosDetalhamentoExtraPrato> cadastrar(@RequestBody @Valid DadosCadastroPrato dados) {
+//        var prato = new Prato(dados);
         var prato = new Prato();
         prato.setNome(dados.nome());
         prato.setPreco(dados.preco());
         prato.setDescricao(dados.descricao());
         prato.setModoPreparo(dados.modoPreparo());
+        prato.setAvaliacaoMed(5.00);
         pratoRepository.save(prato);
         return ResponseEntity.status(HttpStatus.CREATED).body(new DadosDetalhamentoExtraPrato(prato));
     }
