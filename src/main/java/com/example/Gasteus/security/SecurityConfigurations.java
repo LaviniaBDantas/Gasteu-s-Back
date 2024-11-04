@@ -107,6 +107,7 @@ import com.example.Gasteus.model.funcionario.autenticacao.AutenticacaoFuncionari
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -139,8 +140,8 @@ public class SecurityConfigurations {
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
-                    // Permissões de acesso para rotas específicas
-                    req.requestMatchers("/login/cliente", "/cadastro/cliente", "/home").permitAll()
+                    req.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // Permite todos os requests OPTIONS
+                            .requestMatchers("/login/cliente", "/cadastro/cliente", "/home").permitAll()
                             .requestMatchers("/login/funcionario", "/cadastro/funcionario").permitAll()
                             .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                             .requestMatchers("/reserva").authenticated()
@@ -151,6 +152,7 @@ public class SecurityConfigurations {
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
