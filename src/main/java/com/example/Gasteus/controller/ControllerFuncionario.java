@@ -64,8 +64,9 @@ public class ControllerFuncionario {
 //            }
 //        }
 
-        var funcionario= funcionarioFactory.criarFuncionario(dados);
-
+        //ANTES DO TEMPLATE
+        //var funcionario= funcionarioFactory.criarFuncionario(dados);
+        var funcionario = funcionarioFactory.criarUsuario(dados);
         funcionarioRepository.save(funcionario);
         return ResponseEntity.ok(new DadosDetalhamentoFuncionario(funcionario));
     }

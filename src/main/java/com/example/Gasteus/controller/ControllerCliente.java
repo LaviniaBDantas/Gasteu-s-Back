@@ -65,8 +65,9 @@ public class ControllerCliente {
 //            }
 //        }
 
-        Cliente cliente = clienteFactory.criarCliente(dados);
-
+        //ANTES DO TEMPLATE
+        //Cliente cliente = clienteFactory.criarCliente(dados);
+        Cliente cliente = clienteFactory.criarUsuario(dados);
         // Salva o cliente no repositório
         clienteRepositorio.save(cliente);
         return ResponseEntity.ok(new DadosDetalhamentoCliente(cliente));
