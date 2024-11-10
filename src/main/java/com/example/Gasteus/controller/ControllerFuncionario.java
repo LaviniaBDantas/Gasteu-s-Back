@@ -1,10 +1,9 @@
 package com.example.Gasteus.controller;
 
-import com.example.Gasteus.model.Role;
-import com.example.Gasteus.model.cliente.autenticacao.DadosAutenticacaoCliente;
 import com.example.Gasteus.model.funcionario.DadosCadastroFuncionario;
 import com.example.Gasteus.model.funcionario.DadosDetalhamentoFuncionario;
 import com.example.Gasteus.model.funcionario.Funcionario;
+import com.example.Gasteus.model.funcionario.factory.FuncionarioFactory;
 import com.example.Gasteus.model.funcionario.autenticacao.DadosAutenticacaoFuncionario;
 import com.example.Gasteus.repository.FuncionarioRepository;
 import com.example.Gasteus.repository.RoleRepository;
@@ -37,6 +36,9 @@ public class ControllerFuncionario {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private FuncionarioFactory funcionarioFactory;
+
     @PostMapping("/cadastro/funcionario")
     @Transactional
     public ResponseEntity cadastrar(@ModelAttribute @Valid DadosCadastroFuncionario dados, UriComponentsBuilder uriBuilder) throws IOException {
@@ -44,22 +46,25 @@ public class ControllerFuncionario {
             return ResponseEntity.badRequest().body("Funcionário já cadastrado");
         }
 
-        Role funcRole = roleRepository.findByNome("ADMIN");
-        if (funcRole == null) {
-            return ResponseEntity.badRequest().body("Role ADMIN não encontrada.");
-        }
+        //ANTES da FACTORY:
+//        Role funcRole = roleRepository.findByNome("ADMIN");
+//        if (funcRole == null) {
+//            return ResponseEntity.badRequest().body("Role ADMIN não encontrada.");
+//        }
+//
+//        var funcionario = new Funcionario(dados);
+//        funcionario.setRole(funcRole);
+//
+//        // Processar o documento, se fornecido
+//        if (dados.curriculo() != null && !dados.curriculo().isEmpty()) {
+//            try {
+//                funcionario.setCurriculo(dados.curriculo().getBytes());
+//            } catch (IOException e) {
+//                return ResponseEntity.badRequest().body("Erro ao processar o documento.");
+//            }
+//        }
 
-        var funcionario = new Funcionario(dados);
-        funcionario.setRole(funcRole);
-
-        // Processar o documento, se fornecido
-        if (dados.curriculo() != null && !dados.curriculo().isEmpty()) {
-            try {
-                funcionario.setCurriculo(dados.curriculo().getBytes());
-            } catch (IOException e) {
-                return ResponseEntity.badRequest().body("Erro ao processar o documento.");
-            }
-        }
+        var funcionario= funcionarioFactory.criarFuncionario(dados);
 
         funcionarioRepository.save(funcionario);
         return ResponseEntity.ok(new DadosDetalhamentoFuncionario(funcionario));

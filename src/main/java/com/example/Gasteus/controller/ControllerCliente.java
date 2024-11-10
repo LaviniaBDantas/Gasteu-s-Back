@@ -1,7 +1,7 @@
 package com.example.Gasteus.controller;
 
-import com.example.Gasteus.model.Role;
 import com.example.Gasteus.model.cliente.Cliente;
+import com.example.Gasteus.model.cliente.factory.ClienteFactory;
 import com.example.Gasteus.model.cliente.DadosCadastroCliente;
 import com.example.Gasteus.model.cliente.DadosDetalhamentoCliente;
 import com.example.Gasteus.model.cliente.autenticacao.DadosAutenticacaoCliente;
@@ -11,7 +11,6 @@ import com.example.Gasteus.security.DadosTokenJWT;
 import com.example.Gasteus.security.TokenService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,10 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.io.IOException;
 
 @RestController
 public class ControllerCliente {
@@ -39,6 +35,9 @@ public class ControllerCliente {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private ClienteFactory clienteFactory;
+
     @PostMapping("/cadastro/cliente")
     @Transactional
     public ResponseEntity<?> cadastrar(@ModelAttribute @Valid DadosCadastroCliente dados, UriComponentsBuilder uriBuilder) {
@@ -46,25 +45,27 @@ public class ControllerCliente {
         if (clienteRepositorio.findByCpf(dados.cpf()).isPresent()) {
             return ResponseEntity.badRequest().body("Cliente já cadastrado");
         }
+//ANTES DO FACTORY:
+//        // Busca a role USER
+//        Role userRole = roleRepository.findByNome("USER");
+//        if (userRole == null) {
+//            return ResponseEntity.badRequest().body("Role USER não encontrada.");
+//        }
+//
+//        // Cria o cliente e associa a role
+//        var cliente = new Cliente(dados);
+//        cliente.setRole(userRole);
+//
+//        // Processa a foto de perfil, se fornecida
+//        if (dados.fotoPerfil() != null && !dados.fotoPerfil().isEmpty()) {
+//            try {
+//                cliente.setFotoPerfil(dados.fotoPerfil().getBytes());
+//            } catch (IOException e) {
+//                return ResponseEntity.badRequest().body("Erro ao processar a foto de perfil.");
+//            }
+//        }
 
-        // Busca a role USER
-        Role userRole = roleRepository.findByNome("USER");
-        if (userRole == null) {
-            return ResponseEntity.badRequest().body("Role USER não encontrada.");
-        }
-
-        // Cria o cliente e associa a role
-        var cliente = new Cliente(dados);
-        cliente.setRole(userRole);
-
-        // Processa a foto de perfil, se fornecida
-        if (dados.fotoPerfil() != null && !dados.fotoPerfil().isEmpty()) {
-            try {
-                cliente.setFotoPerfil(dados.fotoPerfil().getBytes());
-            } catch (IOException e) {
-                return ResponseEntity.badRequest().body("Erro ao processar a foto de perfil.");
-            }
-        }
+        Cliente cliente = clienteFactory.criarCliente(dados);
 
         // Salva o cliente no repositório
         clienteRepositorio.save(cliente);

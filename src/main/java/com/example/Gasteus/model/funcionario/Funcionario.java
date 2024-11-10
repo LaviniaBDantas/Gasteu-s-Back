@@ -34,7 +34,7 @@ public class Funcionario implements UserDetails {
     private Role role;
 
 
-    public Funcionario(DadosCadastroFuncionario dados) throws IOException {
+    public Funcionario(DadosCadastroFuncionario dados) {
         this.nroCarteira = dados.nroCarteira();
         this.nome = dados.nome();
         this.funcao = dados.funcao();
