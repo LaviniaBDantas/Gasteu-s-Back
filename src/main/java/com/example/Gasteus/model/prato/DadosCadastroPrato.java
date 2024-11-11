@@ -10,6 +10,7 @@ public record DadosCadastroPrato
     @NotBlank
     String descricao,
    @NotBlank
-   String modoPreparo){
+   String modoPreparo)
+{
 
 }

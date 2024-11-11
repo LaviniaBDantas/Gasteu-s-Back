@@ -1,4 +1,4 @@
-package com.example.Gasteus.model.autenticacao;
+package com.example.Gasteus.model.adapter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

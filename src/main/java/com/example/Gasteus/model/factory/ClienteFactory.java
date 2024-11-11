@@ -1,9 +1,9 @@
-package com.example.Gasteus.model.cliente.factory;
+package com.example.Gasteus.model.factory;
 
 import com.example.Gasteus.model.Role;
 import com.example.Gasteus.model.cliente.Cliente;
 import com.example.Gasteus.model.cliente.DadosCadastroCliente;
-import com.example.Gasteus.model.template.UsuarioTemplate;
+import com.example.Gasteus.model.template.FactoryTemplate;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ import java.io.IOException;
 //DEPOIS:
 
 @Component
-public class ClienteFactory extends UsuarioTemplate<Cliente,DadosCadastroCliente> {
+public class ClienteFactory extends FactoryTemplate<Cliente,DadosCadastroCliente> {
     @Override
     protected Role obterRole() {
         return roleRepository.findByNome("USER");

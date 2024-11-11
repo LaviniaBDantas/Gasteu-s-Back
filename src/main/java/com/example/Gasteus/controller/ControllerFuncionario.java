@@ -3,7 +3,7 @@ package com.example.Gasteus.controller;
 import com.example.Gasteus.model.funcionario.DadosCadastroFuncionario;
 import com.example.Gasteus.model.funcionario.DadosDetalhamentoFuncionario;
 import com.example.Gasteus.model.funcionario.Funcionario;
-import com.example.Gasteus.model.funcionario.factory.FuncionarioFactory;
+import com.example.Gasteus.model.factory.FuncionarioFactory;
 import com.example.Gasteus.model.funcionario.autenticacao.DadosAutenticacaoFuncionario;
 import com.example.Gasteus.repository.FuncionarioRepository;
 import com.example.Gasteus.repository.RoleRepository;

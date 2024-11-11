@@ -1,10 +1,11 @@
 package com.example.Gasteus.controller;
 
 import com.example.Gasteus.model.cliente.Cliente;
-import com.example.Gasteus.model.cliente.factory.ClienteFactory;
+import com.example.Gasteus.model.factory.ClienteFactory;
 import com.example.Gasteus.model.cliente.DadosCadastroCliente;
 import com.example.Gasteus.model.cliente.DadosDetalhamentoCliente;
 import com.example.Gasteus.model.cliente.autenticacao.DadosAutenticacaoCliente;
+import com.example.Gasteus.model.proxy.ClienteProxy;
 import com.example.Gasteus.repository.ClienteRepository;
 import com.example.Gasteus.repository.RoleRepository;
 import com.example.Gasteus.security.DadosTokenJWT;

@@ -19,9 +19,9 @@ public class Reserva {
     private Cliente cliente;
 
     public Reserva(DadosCadastroReserva dados, Cliente cliente){
-        this.dataHora=dados.dataHora();
-        this.mesa=dados.mesa();
-        this.qtdPessoas=dados.qtd();
+        dataHora=dados.dataHora();
+        mesa=dados.mesa();
+        qtdPessoas=dados.qtd();
         this.cliente=cliente;
     }
 

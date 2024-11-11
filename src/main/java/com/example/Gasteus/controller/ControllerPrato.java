@@ -2,6 +2,7 @@ package com.example.Gasteus.controller;
 
 import java.util.List;
 
+import com.example.Gasteus.model.proxy.PratoProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,13 +38,7 @@ public class ControllerPrato {
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public ResponseEntity<DadosDetalhamentoExtraPrato> cadastrar(@RequestBody @Valid DadosCadastroPrato dados) {
-        // var prato = new Prato(dados);
-        var prato = new Prato();
-        prato.setNome(dados.nome());
-        prato.setPreco(dados.preco());
-        prato.setDescricao(dados.descricao());
-        prato.setModoPreparo(dados.modoPreparo());
-        prato.setAvaliacaoMed(5.00);
+        var prato = new Prato(dados);
         pratoRepository.save(prato);
         return ResponseEntity.status(HttpStatus.CREATED).body(new DadosDetalhamentoExtraPrato(prato));
     }

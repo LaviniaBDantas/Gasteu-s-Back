@@ -1,11 +1,5 @@
 package com.example.Gasteus.model;
-
-import com.example.Gasteus.model.cliente.Cliente;
-import com.example.Gasteus.model.reserva.DadosCadastroReserva;
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "role")
 public class Role {

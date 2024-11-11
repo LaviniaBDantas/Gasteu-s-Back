@@ -1,4 +1,4 @@
-package com.example.Gasteus.controller;
+package com.example.Gasteus.model.proxy;
 
 import com.example.Gasteus.model.prato.DadosAtualizaPrato;
 import com.example.Gasteus.model.prato.Prato;

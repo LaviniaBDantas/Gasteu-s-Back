@@ -1,4 +1,4 @@
-package com.example.Gasteus.model.autenticacao;
+package com.example.Gasteus.model.adapter;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

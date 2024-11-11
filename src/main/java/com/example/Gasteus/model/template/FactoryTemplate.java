@@ -4,7 +4,7 @@ import com.example.Gasteus.model.Role;
 import com.example.Gasteus.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class UsuarioTemplate<T,D> {
+public abstract class FactoryTemplate<T,D> {
 
     @Autowired
     protected RoleRepository roleRepository;

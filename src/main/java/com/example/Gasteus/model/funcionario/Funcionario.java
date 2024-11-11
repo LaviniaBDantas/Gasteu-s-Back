@@ -39,7 +39,7 @@ public class Funcionario implements UserDetails {
         this.nome = dados.nome();
         this.funcao = dados.funcao();
         this.telefone = dados.telefone();
-        this.dataContratacao = dados.dataContratacao(); // Adicionado aqui
+        this.dataContratacao = dados.dataContratacao();
         this.senha = new BCryptPasswordEncoder().encode(dados.senha());
     }
 
@@ -48,10 +48,6 @@ public class Funcionario implements UserDetails {
 
     }
 
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return java.util.List.of(new SimpleGrantedAuthority("ROLE_" + role.getNome()));
-//    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();

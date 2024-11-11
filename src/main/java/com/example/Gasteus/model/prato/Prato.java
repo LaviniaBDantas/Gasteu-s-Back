@@ -24,12 +24,18 @@ public class Prato {
     private String modoPreparo;
 
 
-//    public Prato(DadosCadastroPrato dados) {
-//        this.nome = dados.nome();
-//        this.preco = dados.preco();
-//        this.descricao = dados.descricao();
-//        this.modoPreparo = dados.modoPreparo();
-//    }
+    public Prato(DadosCadastroPrato dados) {
+        nome = dados.nome();
+        preco = dados.preco();
+        descricao = dados.descricao();
+        modoPreparo = dados.modoPreparo();
+        avaliacaoMed=  5.00;
+
+    }
+
+    public Prato() {
+
+    }
 
     // Getters e Setters
     public Integer getCod() {

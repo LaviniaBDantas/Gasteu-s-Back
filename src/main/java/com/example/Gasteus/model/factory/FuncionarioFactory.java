@@ -1,9 +1,9 @@
-package com.example.Gasteus.model.funcionario.factory;
+package com.example.Gasteus.model.factory;
 
 import com.example.Gasteus.model.Role;
 import com.example.Gasteus.model.funcionario.DadosCadastroFuncionario;
 import com.example.Gasteus.model.funcionario.Funcionario;
-import com.example.Gasteus.model.template.UsuarioTemplate;
+import com.example.Gasteus.model.template.FactoryTemplate;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -36,7 +36,7 @@ import java.io.IOException;
 //}
 
 @Component
-public class FuncionarioFactory extends UsuarioTemplate<Funcionario, DadosCadastroFuncionario> {
+public class FuncionarioFactory extends FactoryTemplate<Funcionario, DadosCadastroFuncionario> {
 
     @Override
     protected Role obterRole() {

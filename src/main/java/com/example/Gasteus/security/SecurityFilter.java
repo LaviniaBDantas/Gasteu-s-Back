@@ -32,13 +32,13 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (tokenJWT != null) {
             var subject = tokenService.getSubject(tokenJWT);
 
-            // Tente encontrar o cliente pelo CPF
+            // Tenta encontrar o cliente pelo CPF
             var cliente = clienteRepository.findByCpf(subject);
             if (cliente.isPresent()) {
                 var authentication = new UsernamePasswordAuthenticationToken(cliente.get(), null, cliente.get().getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
-                // Se não encontrar um cliente, tente encontrar o funcionário pelo número da carteira
+                // Se não encontrar um cliente, tenta encontrar o funcionário pelo número da carteira
                 var funcionario = funcionarioRepository.findByNroCarteira(Long.parseLong(subject));
                 if (funcionario.isPresent()) {
                     var authentication = new UsernamePasswordAuthenticationToken(funcionario.get(), null, funcionario.get().getAuthorities());

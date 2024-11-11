@@ -12,6 +12,6 @@ public record DadosCadastroFuncionario(
         @NotBlank String funcao,
         @NotNull LocalDate dataContratacao,
         @NotBlank String senha,
-        MultipartFile curriculo  // Novo campo para o documento
+        MultipartFile curriculo
 ) {
 }
