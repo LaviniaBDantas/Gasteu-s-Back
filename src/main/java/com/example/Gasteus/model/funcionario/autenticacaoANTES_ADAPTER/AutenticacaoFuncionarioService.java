@@ -1,4 +1,4 @@
-package com.example.Gasteus.model.funcionario.autenticacao;
+package com.example.Gasteus.model.funcionario.autenticacaoANTES_ADAPTER;
 
 import com.example.Gasteus.repository.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

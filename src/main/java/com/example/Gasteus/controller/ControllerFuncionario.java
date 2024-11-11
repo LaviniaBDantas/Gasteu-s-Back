@@ -1,10 +1,10 @@
 package com.example.Gasteus.controller;
-
+import com.example.Gasteus.model.adapter.AutenticacaoAdapter;
 import com.example.Gasteus.model.funcionario.DadosCadastroFuncionario;
 import com.example.Gasteus.model.funcionario.DadosDetalhamentoFuncionario;
 import com.example.Gasteus.model.funcionario.Funcionario;
 import com.example.Gasteus.model.factory.FuncionarioFactory;
-import com.example.Gasteus.model.funcionario.autenticacao.DadosAutenticacaoFuncionario;
+import com.example.Gasteus.model.funcionario.autenticacaoANTES_ADAPTER.DadosAutenticacaoFuncionario;
 import com.example.Gasteus.repository.FuncionarioRepository;
 import com.example.Gasteus.repository.RoleRepository;
 import com.example.Gasteus.security.DadosTokenJWT;
@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -38,6 +39,9 @@ public class ControllerFuncionario {
 
     @Autowired
     private FuncionarioFactory funcionarioFactory;
+
+    @Autowired
+    private AutenticacaoAdapter autenticacaoAdapter;
 
     @PostMapping("/cadastro/funcionario")
     @Transactional
@@ -73,14 +77,30 @@ public class ControllerFuncionario {
 
 
 
+//    @PostMapping("/login/funcionario")
+//    public ResponseEntity<DadosTokenJWT> login(@RequestBody @Valid DadosAutenticacaoFuncionario dados) {
+//        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.nroCarteira(), dados.senha());
+//        var authentication = authenticationManager.authenticate(authenticationToken);
+//        var tokenJWT = tokenService.gerarToken((UserDetails) authentication.getPrincipal());
+//        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
+//    }
+//
+//    em ControllerFuncionario
+
+
     @PostMapping("/login/funcionario")
     public ResponseEntity<DadosTokenJWT> login(@RequestBody @Valid DadosAutenticacaoFuncionario dados) {
-        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.nroCarteira(), dados.senha());
-        var authentication = authenticationManager.authenticate(authenticationToken);
-        var tokenJWT = tokenService.gerarToken((UserDetails) authentication.getPrincipal());
-        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
-    }
+        try {//Adapter para autenticar o funcionário
+            UserDetails userDetails = autenticacaoAdapter.autenticar(String.valueOf(dados.nroCarteira()));
+            var authenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), dados.senha());
+            var authentication = authenticationManager.authenticate(authenticationToken);
+            var tokenJWT = tokenService.gerarToken((UserDetails) authentication.getPrincipal());
+            return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
 
+        } catch (AuthenticationException e) {
+            return ResponseEntity.badRequest().body(new DadosTokenJWT("Falha na autenticação: " + e.getMessage()));
+        }
+    }
 
     @GetMapping("/admin")
     public ResponseEntity<DadosDetalhamentoFuncionario> obterFuncionarioLogado(Authentication authentication) {

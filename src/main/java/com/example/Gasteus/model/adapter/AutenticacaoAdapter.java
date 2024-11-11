@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.Gasteus.model.cliente.autenticacao.AutenticacaoClienteService;
-import com.example.Gasteus.model.funcionario.autenticacao.AutenticacaoFuncionarioService;
+import com.example.Gasteus.model.cliente.autenticacaoANTES_ADAPTER.AutenticacaoClienteService;
+import com.example.Gasteus.model.funcionario.autenticacaoANTES_ADAPTER.AutenticacaoFuncionarioService;
 
 @Service
 public class AutenticacaoAdapter implements AutenticacaoService {

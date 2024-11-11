@@ -1,4 +1,4 @@
-package com.example.Gasteus.model.cliente.autenticacao;
+package com.example.Gasteus.model.cliente.autenticacaoANTES_ADAPTER;
 
 import jakarta.validation.constraints.NotBlank;
 

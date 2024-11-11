@@ -1,10 +1,10 @@
 package com.example.Gasteus.controller;
-
+import com.example.Gasteus.model.adapter.AutenticacaoAdapter;
 import com.example.Gasteus.model.cliente.Cliente;
 import com.example.Gasteus.model.factory.ClienteFactory;
 import com.example.Gasteus.model.cliente.DadosCadastroCliente;
 import com.example.Gasteus.model.cliente.DadosDetalhamentoCliente;
-import com.example.Gasteus.model.cliente.autenticacao.DadosAutenticacaoCliente;
+import com.example.Gasteus.model.cliente.autenticacaoANTES_ADAPTER.DadosAutenticacaoCliente;
 import com.example.Gasteus.model.proxy.ClienteProxy;
 import com.example.Gasteus.repository.ClienteRepository;
 import com.example.Gasteus.repository.RoleRepository;
@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -38,6 +39,9 @@ public class ControllerCliente {
 
     @Autowired
     private ClienteFactory clienteFactory;
+
+    @Autowired
+    private AutenticacaoAdapter autenticacaoAdapter;
 
     @PostMapping("/cadastro/cliente")
     @Transactional
@@ -74,12 +78,28 @@ public class ControllerCliente {
         return ResponseEntity.ok(new DadosDetalhamentoCliente(cliente));
     }
 
+    //ANTES DO ADAPTER:
+//    @PostMapping("/login/cliente")
+//    public ResponseEntity<DadosTokenJWT> login(@RequestBody @Valid DadosAutenticacaoCliente dados) {
+//        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.cpf(), dados.senha());
+//        var authentication = autenticacaoAdapter.autenticar(authenticationToken);
+//        var tokenJWT = tokenService.gerarToken((UserDetails) authentication.getPrincipal());
+//        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
+//    }
+
     @PostMapping("/login/cliente")
     public ResponseEntity<DadosTokenJWT> login(@RequestBody @Valid DadosAutenticacaoCliente dados) {
-        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.cpf(), dados.senha());
-        var authentication = authenticationManager.authenticate(authenticationToken);
-        var tokenJWT = tokenService.gerarToken((UserDetails) authentication.getPrincipal());
-        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
+        try { //uso do adapter
+
+            UserDetails userDetails = autenticacaoAdapter.autenticar(dados.cpf());
+            var authenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), dados.senha());
+            var authentication = authenticationManager.authenticate(authenticationToken);
+            var tokenJWT = tokenService.gerarToken((UserDetails) authentication.getPrincipal());
+            return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
+
+        } catch (AuthenticationException e) {
+            return ResponseEntity.badRequest().body(new DadosTokenJWT("Falha na autenticação: " + e.getMessage()));
+        }
     }
 
     @GetMapping("/user")

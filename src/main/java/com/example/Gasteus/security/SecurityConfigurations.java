@@ -1,7 +1,7 @@
 package com.example.Gasteus.security;
 
-import com.example.Gasteus.model.cliente.autenticacao.AutenticacaoClienteService;
-import com.example.Gasteus.model.funcionario.autenticacao.AutenticacaoFuncionarioService;
+import com.example.Gasteus.model.cliente.autenticacaoANTES_ADAPTER.AutenticacaoClienteService;
+import com.example.Gasteus.model.funcionario.autenticacaoANTES_ADAPTER.AutenticacaoFuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
