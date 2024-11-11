@@ -88,13 +88,13 @@ public class ControllerCliente {
     }
 
     @PutMapping("/user/atualizar-telefone")
-    @Transactional
-    public ResponseEntity atualizarTelefone(@RequestParam String novoTelefone, Authentication authentication) {
-        Cliente cliente = (Cliente) authentication.getPrincipal();
-        cliente.setTelefone(novoTelefone);
-        clienteRepositorio.save(cliente);
-        return ResponseEntity.ok("Telefone atualizado com sucesso.");
-    }
+@Transactional
+public ResponseEntity atualizarTelefone(@RequestParam String novoTelefone, Authentication authentication) {
+    Cliente cliente = (Cliente) authentication.getPrincipal();
+    ClienteProxy clienteProxy = new ClienteProxy(cliente);
+    return clienteProxy.atualizarTelefone(novoTelefone, clienteRepositorio);
+}
+
 
     @DeleteMapping("/user")
     @Transactional

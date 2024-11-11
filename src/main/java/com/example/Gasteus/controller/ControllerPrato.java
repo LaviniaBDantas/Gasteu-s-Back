@@ -1,16 +1,29 @@
 package com.example.Gasteus.controller;
 
-import com.example.Gasteus.model.prato.*;
-import com.example.Gasteus.repository.PratoRepository;
-import jakarta.validation.Valid;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.example.Gasteus.model.prato.DadosAtualizaPrato;
+import com.example.Gasteus.model.prato.DadosCadastroPrato;
+import com.example.Gasteus.model.prato.DadosDetalhamentoExtraPrato;
+import com.example.Gasteus.model.prato.DadosDetalhamentoPrato;
+import com.example.Gasteus.model.prato.Prato;
+import com.example.Gasteus.repository.PratoRepository;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping
@@ -19,13 +32,12 @@ public class ControllerPrato {
     @Autowired
     private PratoRepository pratoRepository;
 
-
     // Rota para ADMIN: Cadastrar um novo prato
     @PostMapping("/admin/prato")
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public ResponseEntity<DadosDetalhamentoExtraPrato> cadastrar(@RequestBody @Valid DadosCadastroPrato dados) {
-//        var prato = new Prato(dados);
+        // var prato = new Prato(dados);
         var prato = new Prato();
         prato.setNome(dados.nome());
         prato.setPreco(dados.preco());
@@ -36,32 +48,18 @@ public class ControllerPrato {
         return ResponseEntity.status(HttpStatus.CREATED).body(new DadosDetalhamentoExtraPrato(prato));
     }
 
-    // Rota para ADMIN: Atualizar o preço de um prato
+    // Rota para ADMIN: Atualizar os dados de um prato usando o Proxy
     @PutMapping("/admin/prato/{cod}")
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
-    public ResponseEntity<DadosDetalhamentoPrato> atualizar(@PathVariable Integer cod, @RequestBody @Valid DadosAtualizaPrato dados) {
-        var pratoOptional = pratoRepository.findByCod(cod);
-        if (pratoOptional.isPresent()) {
-            Prato prato = pratoOptional.get();
-
-            // Verifica e atualiza cada campo apenas se o dado não for nulo
-            if (dados.nome() != null) {
-                prato.setNome(dados.nome());
-            }
-            if (dados.preco() != null) {
-                prato.setPreco(dados.preco());
-            }
-            if (dados.descricao() != null) {
-                prato.setDescricao(dados.descricao());
-            }
-
-            pratoRepository.save(prato);
-            return ResponseEntity.ok(new DadosDetalhamentoPrato(prato));
+    public ResponseEntity<?> atualizar(@PathVariable Integer cod, @RequestBody @Valid DadosAtualizaPrato dados) {
+        Prato prato = pratoRepository.findByCod(cod).orElse(null);
+        if (prato == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Prato não encontrado");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        PratoProxy pratoProxy = new PratoProxy(pratoRepository);
+        return pratoProxy.atualizarPrato(cod, dados);
     }
-
 
     // Rota para ADMIN: Deletar um prato
     @DeleteMapping("/admin/prato/{cod}")
@@ -83,9 +81,10 @@ public class ControllerPrato {
         List<Prato> pratos = pratoRepository.findAll();
         return ResponseEntity.ok(pratos.stream().map(DadosDetalhamentoPrato::new).toList());
     }
-    //Mostrar modo de preparo do prato
+
+    // Mostrar modo de preparo do prato
     @GetMapping("/admin/prato/{cod}")
-    //@PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<DadosDetalhamentoExtraPrato> detalhes(@PathVariable Integer cod) {
         var pratoOptional = pratoRepository.findByCod(cod);
         if (pratoOptional.isPresent()) {
