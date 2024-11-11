@@ -82,7 +82,7 @@ public class ControllerCliente {
 //    @PostMapping("/login/cliente")
 //    public ResponseEntity<DadosTokenJWT> login(@RequestBody @Valid DadosAutenticacaoCliente dados) {
 //        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.cpf(), dados.senha());
-//        var authentication = autenticacaoAdapter.autenticar(authenticationToken);
+//        var authentication = authenticationManager.authenticate(authenticationToken);
 //        var tokenJWT = tokenService.gerarToken((UserDetails) authentication.getPrincipal());
 //        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
 //    }

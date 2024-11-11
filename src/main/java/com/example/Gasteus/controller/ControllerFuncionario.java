@@ -76,7 +76,7 @@ public class ControllerFuncionario {
     }
 
 
-
+//ANTES DO ADAPTER
 //    @PostMapping("/login/funcionario")
 //    public ResponseEntity<DadosTokenJWT> login(@RequestBody @Valid DadosAutenticacaoFuncionario dados) {
 //        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.nroCarteira(), dados.senha());
@@ -85,9 +85,7 @@ public class ControllerFuncionario {
 //        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
 //    }
 //
-//    em ControllerFuncionario
-
-
+//
     @PostMapping("/login/funcionario")
     public ResponseEntity<DadosTokenJWT> login(@RequestBody @Valid DadosAutenticacaoFuncionario dados) {
         try {//Adapter para autenticar o funcionário
